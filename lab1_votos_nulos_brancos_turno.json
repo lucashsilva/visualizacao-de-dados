@@ -1,59 +1,65 @@
-{  
+{
    "$schema":"https://vega.github.io/schema/vega-lite/v2.json",
    "description":"A simple bar chart with embedded data.",
-   "data":{  
-      "url":"https://raw.githubusercontent.com/nazareno/eleicoes-sumario-tidy/master/data/comparecimento_tidy_long.csv"
+   "data":{
+      "url":"https://raw.githubusercontent.com/nazareno/eleicoes-sumario-tidy/master/data/comparecimento_tidy_long.csv",
+      "format":{
+         "type":"csv",
+         "parse":{
+            "votos":"number"
+         }
+      }
    },
    "width":500,
    "height":300,
    "mark":"line",
-   "transform":[  
-      {  
-         "filter":{  
+   "transform":[
+      {
+         "filter":{
             "field":"situacao",
-            "oneOf":[  
+            "oneOf":[
                "VOTOS EM BRANCO",
                "VOTOS NULOS",
                "VOTOS BRANCOS"
             ]
          }
       },
-      {  
-         "filter":{  
+      {
+         "filter":{
             "field":"ano",
             "gte":2002
          }
       },
-      {  
-         "filter":{  
+      {
+         "filter":{
             "field":"votos",
             "valid":true
          }
       },
-      {  
-         "aggregate":[  
-            {  
-               "op":"mean",
+      {
+         "aggregate":[
+            {
+               "op":"sum",
                "field":"votos",
                "as":"sum_votos_nulos_brancos"
             }
          ],
-         "groupby":[  
+         "groupby":[
             "ano",
             "turno"
          ]
       }
    ],
-   "encoding":{  
-      "x":{  
+   "encoding":{
+      "x":{
          "field":"ano",
          "type":"ordinal"
       },
-      "y":{  
+      "y":{
          "field":"sum_votos_nulos_brancos",
-         "type":"ordinal"
+         "type":"quantitative"
       },
-      "color":{  
+      "color":{
          "field":"turno",
          "type":"nominal"
       }
